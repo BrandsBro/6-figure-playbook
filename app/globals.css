@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  /* â”€â”€ Premium Emerald Palette â”€â”€ */
-  --em:         #3ECF8E;   /* main emerald â€” Supabase-style */
-  --em-dark:    #29A373;   /* hover / dark */
-  --em-deeper:  #1A7A55;   /* deep accent */
+  --em:         #3ECF8E;
+  --em-dark:    #29A373;
+  --em-deeper:  #1A7A55;
   --em-dim:     rgba(62,207,142,0.12);
-  --em-border:  rgba(62,207,142,0.2);
-  --em-glow:    rgba(62,207,142,0.25);
+  --em-border:  rgba(62,207,142,0.22);
+  --em-glow:    rgba(62,207,142,0.2);
 
-  --bg:         #080C0A;   /* near-black with green tint */
-  --surface:    #0F1713;   /* card surface */
-  --surface2:   #141F19;   /* alt section */
-  --border:     rgba(255,255,255,0.07);
+  /* Backgrounds â€” much less green tint so text pops */
+  --bg:         #09090B;   /* near pure black */
+  --surface:    #111113;   /* card surface â€” neutral dark */
+  --surface2:   #0F0F11;   /* alt section */
+  --border:     rgba(255,255,255,0.09);
 
   --white:      #FFFFFF;
-  --text:       #F1F5F2;   /* near-white, slightly warm */
-  --text-body:  #A8B8AE;   /* readable body */
-  --text-muted: #5A7065;   /* labels, captions */
+  --text:       #F4F4F5;   /* headings â€” almost white */
+  --text-body:  #C4C4C8;   /* body copy â€” clearly readable */
+  --text-muted: #71717A;   /* labels â€” not too dark */
   --gold:       #F0C060;
 }
 
@@ -33,12 +33,11 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--em-dim); color: var(--white); }
+::selection { background: rgba(62,207,142,0.2); color: var(--white); }
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--em-deeper); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--em-dark); border-radius: 2px; }
 
-/* â”€â”€ Fade animations â”€â”€ */
 .fu {
   opacity: 0;
   transform: translateY(28px);
