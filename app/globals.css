@@ -1,26 +1,48 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* â”€â”€ Premium Emerald Palette â”€â”€ */
+  --em:         #3ECF8E;   /* main emerald â€” Supabase-style */
+  --em-dark:    #29A373;   /* hover / dark */
+  --em-deeper:  #1A7A55;   /* deep accent */
+  --em-dim:     rgba(62,207,142,0.12);
+  --em-border:  rgba(62,207,142,0.2);
+  --em-glow:    rgba(62,207,142,0.25);
+
+  --bg:         #080C0A;   /* near-black with green tint */
+  --surface:    #0F1713;   /* card surface */
+  --surface2:   #141F19;   /* alt section */
+  --border:     rgba(255,255,255,0.07);
+
+  --white:      #FFFFFF;
+  --text:       #F1F5F2;   /* near-white, slightly warm */
+  --text-body:  #A8B8AE;   /* readable body */
+  --text-muted: #5A7065;   /* labels, captions */
+  --gold:       #F0C060;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
 }
+
+::selection { background: var(--em-dim); color: var(--white); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--em-deeper); border-radius: 2px; }
+
+/* â”€â”€ Fade animations â”€â”€ */
+.fu {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+              transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.fu.vis { opacity: 1; transform: translateY(0); }
