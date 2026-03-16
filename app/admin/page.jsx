@@ -1,18 +1,44 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
+const SECRET = process.env.NEXT_PUBLIC_ADMIN_TOKEN || 'brandsbro2024'
+
 export default function AdminPage() {
-  const [leads, setLeads]     = useState([])
-  const [events, setEvents]   = useState([])
-  const [loading, setLoading] = useState(true)
-  const [tab, setTab]         = useState('leads')
+  const [leads, setLeads]       = useState([])
+  const [events, setEvents]     = useState([])
+  const [loading, setLoading]   = useState(true)
+  const [tab, setTab]           = useState('leads')
+  const [allowed, setAllowed]   = useState(false)
+  const params = useSearchParams()
 
   useEffect(() => {
+    const token = params.get('token')
+    if (token === SECRET) {
+      setAllowed(true)
+    }
+  }, [params])
+
+  // Block access if no valid token
+  if (!allowed) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#09090B', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif" }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '4rem', color: '#ffffff', marginBottom: 16 }}>403</div>
+          <div style={{ color: '#52525B', fontSize: '1rem' }}>Access denied.</div>
+        </div>
+      </div>
+    )
+  }
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('token') || ''
+    const headers = { 'x-admin-token': token }
     Promise.all([
-      fetch('/api/leads').then(r => r.json()),
-      fetch('/api/analytics').then(r => r.json()),
+      fetch('/api/leads',    { headers }).then(r => r.json()),
+      fetch('/api/analytics', { headers }).then(r => r.json()),
     ]).then(([l, a]) => {
       setLeads(l.leads || [])
       setEvents(a.events || [])
