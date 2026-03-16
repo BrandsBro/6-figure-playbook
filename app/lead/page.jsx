@@ -60,7 +60,10 @@ export default function LeadPage() {
     } catch (err) {
       console.error(err)
     }
-    setTimeout(() => router.push('/'), 900)
+    setTimeout(() => {
+      document.cookie = 'playbook_access=granted; path=/; max-age=2592000' // 30 days
+      router.push('/')
+    }, 900)
   }
 
   const em = '#3ECF8E', surface = '#111113', border = 'rgba(255,255,255,0.08)', white = '#FFFFFF', muted = '#A1A1AA'

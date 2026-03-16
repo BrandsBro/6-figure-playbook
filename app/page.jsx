@@ -1,7 +1,23 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import s from './page.module.css'
+
+/* ── Gate: redirect to /lead if no access cookie ── */
+function useGate() {
+  const router = useRouter()
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const hasAccess = document.cookie.split(';').some(c => c.trim().startsWith('playbook_access='))
+    if (!hasAccess) {
+      router.replace('/lead')
+    } else {
+      setReady(true)
+    }
+  }, [])
+  return ready
+}
 
 /* ── Fade-up hook ── */
 function useFade() {
@@ -744,6 +760,8 @@ function Footer() {
    PAGE EXPORT
 ══════════════════════════════════════ */
 export default function Home() {
+  const ready = useGate()
+  if (!ready) return <div style={{ minHeight: '100vh', background: '#09090B' }} />
   return (
     <>
       <Navbar />
