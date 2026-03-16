@@ -25,6 +25,7 @@ export default function LeadPage() {
     if (!form.firstName.trim()) e.firstName = 'Required'
     if (!form.lastName.trim())  e.lastName  = 'Required'
     if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email required'
+    if (!form.website.trim()) e.website = 'Required'
     if (!form.privacy) e.privacy = 'Please accept the privacy policy'
     setErrors(e)
     return Object.keys(e).length === 0
@@ -107,7 +108,10 @@ export default function LeadPage() {
               <input type="email" placeholder="Work email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} style={{ ...iS(errors.email), width: '100%' }} onFocus={e => e.target.style.borderColor = em} onBlur={e => e.target.style.borderColor = errors.email ? '#FCA5A5' : border} />
               {errors.email && <p style={eS}>{errors.email}</p>}
             </div>
-            <input type="url" placeholder="Company website (optional)" value={form.website} onChange={e => setForm({ ...form, website: e.target.value })} style={{ ...iS(false), width: '100%' }} onFocus={e => e.target.style.borderColor = em} onBlur={e => e.target.style.borderColor = border} />
+            <div>
+              <input type="url" placeholder="Your company website" value={form.website} onChange={e => setForm({ ...form, website: e.target.value })} style={{ ...iS(errors.website), width: '100%' }} onFocus={e => e.target.style.borderColor = em} onBlur={e => e.target.style.borderColor = errors.website ? '#FCA5A5' : border} />
+              {errors.website && <p style={eS}>{errors.website}</p>}
+            </div>
 
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginTop: 4 }}>
               <div onClick={() => setForm({ ...form, privacy: !form.privacy })} style={{ width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 2, cursor: 'pointer', background: form.privacy ? em : 'transparent', border: `2px solid ${form.privacy ? em : errors.privacy ? '#FCA5A5' : 'rgba(255,255,255,0.2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
