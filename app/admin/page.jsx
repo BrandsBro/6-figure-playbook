@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 const SECRET = process.env.NEXT_PUBLIC_ADMIN_TOKEN || 'brandsbro2024'
 
-export default function AdminPage() {
+function AdminContent() {
   const [leads, setLeads]       = useState([])
   const [events, setEvents]     = useState([])
   const [loading, setLoading]   = useState(true)
@@ -251,3 +251,13 @@ export default function AdminPage() {
     </div>
   )
 }
+
+function AdminPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#09090B' }} />}>
+      <AdminContent />
+    </Suspense>
+  )
+}
+
+export default AdminPage
