@@ -7,18 +7,37 @@ import s from './page.module.css'
 function useFade() {
   const ref = useRef(null)
   useEffect(() => {
-    const els = ref.current?.querySelectorAll(`.${s.fu}`) || []
-    const obs = new IntersectionObserver(
+    const section = ref.current
+    if (!section) return
+
+    // Fade the section itself in
+    section.style.opacity = '0'
+    section.style.transform = 'translateY(48px)'
+    section.style.transition = 'opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1)'
+
+    const sectionObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        section.style.opacity = '1'
+        section.style.transform = 'translateY(0)'
+        sectionObs.disconnect()
+      }
+    }, { threshold: 0.08 })
+    sectionObs.observe(section)
+
+    // Also fade children with .fu class
+    const els = section.querySelectorAll(`.${s.fu}`) || []
+    const childObs = new IntersectionObserver(
       entries => entries.forEach((e, i) => {
         if (e.isIntersecting) {
           setTimeout(() => e.target.classList.add(s.vis), i * 90)
-          obs.unobserve(e.target)
+          childObs.unobserve(e.target)
         }
       }),
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     )
-    els.forEach(el => obs.observe(el))
-    return () => obs.disconnect()
+    els.forEach(el => childObs.observe(el))
+
+    return () => { sectionObs.disconnect(); childObs.disconnect() }
   }, [])
   return ref
 }
@@ -110,8 +129,8 @@ function Hero() {
             </div>
           ))}
         </div>
+        </div>
 
-      </div>
     </section>
   )
 }
@@ -549,27 +568,70 @@ function Testing() {
    TIMELINE
 ══════════════════════════════════════ */
 function Timeline() {
-  const ref = useFade()
+  const ref = useRef(null)
+  const [triggered, setTriggered] = useState(false)
 
   const phases = [
-    { badge: 'Week 1',   title: 'Quick Wins',             items: ['Activate post-purchase system', 'Add rewards bar to cart', 'Inject trust badges'] },
-    { badge: 'Week 2–3', title: 'Cart Optimization',      items: ['AI-powered recommendations', 'Social proof & reviews', 'Tiered rewards gamification'] },
-    { badge: 'Week 3–4', title: 'Yes Ladder Foundation',  items: ['Identify top 5 high-margin SKUs', 'Build first one-click upsell', 'Set up buyer segments'] },
-    { badge: 'Ongoing',  title: 'Test & Optimize',        items: ['A/B test offer sequencing', 'Expand segmentation rules', 'Monitor performance weekly'] },
+    { badge: 'Week 1',   title: 'Quick Wins',            items: ['Activate post-purchase system', 'Add rewards bar to cart', 'Inject trust badges'] },
+    { badge: 'Week 2–3', title: 'Cart Optimization',     items: ['AI-powered recommendations', 'Social proof & reviews', 'Tiered rewards gamification'] },
+    { badge: 'Week 3–4', title: 'Yes Ladder Foundation', items: ['Identify top 5 high-margin SKUs', 'Build first one-click upsell', 'Set up buyer segments'] },
+    { badge: 'Ongoing',  title: 'Test & Optimize',       items: ['A/B test offer sequencing', 'Expand segmentation rules', 'Monitor performance weekly'] },
   ]
 
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTriggered(true); obs.disconnect() }
+    }, { threshold: 0.3 })
+    if (ref.current) obs.observe(ref.current)
+    return () => obs.disconnect()
+  }, [])
+
   return (
-    <section id="timeline" className={s.section} ref={ref}>
+    <section id="timeline" className={s.section} style={{ opacity: 0, transform: 'translateY(48px)', transition: 'opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1)' }}
+      ref={el => {
+        if (!el) return
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; obs.disconnect() }
+        }, { threshold: 0.08 })
+        obs.observe(el)
+      }}
+    >
       <div className={s.wrap}>
         <span className={`${s.tag} ${s.fu}`}>4-Week Roadmap</span>
         <h2 className={`${s.h2} ${s.fu}`}>How To Get Started</h2>
         <p className={`${s.desc} ${s.fu}`}>We don't just give you a tool — we manage your entire journey to higher profits.</p>
 
-        <div className={s.timelineGrid}>
-          <div className={s.timelineLine} />
+        <div ref={ref} style={{ position: 'relative' }}>
+          {/* Animated line from first dot to last dot */}
+          <div style={{
+            position: 'absolute',
+            top: 9,
+            left: 9,
+            right: 'calc(25% + 9px)',
+            height: 1,
+            background: 'rgba(62,207,142,0.12)',
+            overflow: 'hidden',
+            zIndex: 0,
+          }}>
+            <div style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, var(--em), rgba(62,207,142,0.35))',
+              width: triggered ? '100%' : '0%',
+              transition: 'width 1.4s cubic-bezier(0.4,0,0.2,1) 0.1s',
+            }} />
+          </div>
+        <div className={s.phasesRow}>
           {phases.map((p, i) => (
-            <div key={i} className={`${s.phase} ${s.fu}`}>
-              <div className={s.phaseDot} />
+            <div key={i} className={s.phaseCol} style={{
+              opacity: triggered ? 1 : 0,
+              transform: triggered ? 'translateY(0)' : 'translateY(24px)',
+              transition: `opacity 0.5s ease ${0.1 + i * 0.15}s, transform 0.5s ease ${0.1 + i * 0.15}s`,
+            }}>
+              {/* Dot above badge */}
+              <div className={s.dot} style={{
+                transform: triggered ? 'scale(1)' : 'scale(0)',
+                transition: `transform 0.4s cubic-bezier(0.34,1.56,0.64,1) ${0.1 + i * 0.15}s`,
+              }} />
               <div className={s.phaseBadge}>{p.badge}</div>
               <div className={s.phaseTitle}>{p.title}</div>
               <ul className={s.phaseList}>
@@ -580,6 +642,8 @@ function Timeline() {
             </div>
           ))}
         </div>
+        </div>
+
       </div>
     </section>
   )
