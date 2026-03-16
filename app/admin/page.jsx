@@ -47,10 +47,43 @@ function AdminContent() {
 
   // Not authorized
   if (!auth) return (
-    <div style={{ minHeight: '100vh', background: '#09090B', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '5rem', color: '#fff', lineHeight: 1 }}>403</div>
-        <div style={{ color: '#52525B', fontSize: '1rem', marginTop: 12 }}>Access denied.</div>
+    <div style={{ minHeight: '100vh', background: '#09090B', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif", position: 'relative', overflow: 'hidden' }}>
+      {/* Background glow */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(62,207,142,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+      {/* Grid */}
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(62,207,142,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(62,207,142,0.025) 1px, transparent 1px)', backgroundSize: '72px 72px', pointerEvents: 'none' }} />
+
+      <div style={{ position: 'relative', textAlign: 'center', padding: '0 24px' }}>
+        {/* Logo */}
+        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '1.3rem', color: '#fff', letterSpacing: '-0.02em', marginBottom: 48 }}>
+          Brands<span style={{ color: '#3ECF8E' }}>Bro</span>
+        </div>
+
+        {/* Lock icon */}
+        <div style={{ width: 72, height: 72, background: 'rgba(62,207,142,0.08)', border: '1px solid rgba(62,207,142,0.2)', borderRadius: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px', fontSize: '2rem' }}>
+          🔒
+        </div>
+
+        {/* 403 */}
+        <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(5rem, 15vw, 9rem)', color: '#fff', lineHeight: 1, letterSpacing: '-0.04em', marginBottom: 16 }}>
+          403
+        </div>
+
+        {/* Message */}
+        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '1rem', color: '#3ECF8E', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 12 }}>
+          Access Denied
+        </div>
+        <div style={{ fontSize: '0.92rem', color: '#52525B', maxWidth: 340, margin: '0 auto 40px', lineHeight: 1.7 }}>
+          You don't have permission to view this page. Please contact the administrator.
+        </div>
+
+        {/* Back button */}
+        <a href="/" style={{ display: 'inline-block', background: 'transparent', color: '#3ECF8E', border: '1px solid rgba(62,207,142,0.35)', padding: '12px 32px', borderRadius: 8, fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '0.82rem', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', transition: 'all 0.25s' }}
+          onMouseEnter={e => { e.target.style.background = '#3ECF8E'; e.target.style.color = '#000' }}
+          onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = '#3ECF8E' }}
+        >
+          ← Back to Home
+        </a>
       </div>
     </div>
   )
