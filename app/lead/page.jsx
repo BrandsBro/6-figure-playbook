@@ -109,7 +109,7 @@ export default function LeadPage() {
               {errors.email && <p style={eS}>{errors.email}</p>}
             </div>
             <div>
-              <input type="url" placeholder="Your company website" value={form.website} onChange={e => setForm({ ...form, website: e.target.value })} style={{ ...iS(errors.website), width: '100%' }} onFocus={e => e.target.style.borderColor = em} onBlur={e => e.target.style.borderColor = errors.website ? '#FCA5A5' : border} />
+              <input type="text" placeholder="Your company website (e.g. brandsbro.com)" value={form.website} onChange={e => setForm({ ...form, website: e.target.value })} style={{ ...iS(errors.website), width: '100%' }} onFocus={e => e.target.style.borderColor = em} onBlur={e => e.target.style.borderColor = errors.website ? '#FCA5A5' : border} />
               {errors.website && <p style={eS}>{errors.website}</p>}
             </div>
 
